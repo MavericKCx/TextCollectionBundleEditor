@@ -1,2 +1,2 @@
 # TextCollectionBundleEditor
-Unity TextCollection Localization Tool
+Open-source editor for Unity TextCollection AssetBundles.
