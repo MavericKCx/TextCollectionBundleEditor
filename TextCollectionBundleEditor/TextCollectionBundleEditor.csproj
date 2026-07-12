@@ -17,10 +17,10 @@
     <Authors>MaverickCX</Authors>
     <Copyright>© 2026 MaverickCX</Copyright>
 
-    <Version>2.2.0</Version>
-    <AssemblyVersion>2.2.0.0</AssemblyVersion>
-    <FileVersion>2.2.0.0</FileVersion>
-    <InformationalVersion>2.2.0</InformationalVersion>
+    <Version>2.2.1</Version>
+    <AssemblyVersion>2.2.1.0</AssemblyVersion>
+    <FileVersion>2.2.1.0</FileVersion>
+    <InformationalVersion>2.2.1</InformationalVersion>
 
     <ApplicationIcon>Assets\tcbe.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>

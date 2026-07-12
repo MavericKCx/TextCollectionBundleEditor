@@ -63,7 +63,7 @@ public sealed class SplashForm : Form
 
         var version = new Label
         {
-            Text = "Versão 2.2.0",
+            Text = "Versão 2.2.1",
             Dock = DockStyle.Fill,
             TextAlign = ContentAlignment.MiddleCenter,
             Font = new Font("Segoe UI", 9),

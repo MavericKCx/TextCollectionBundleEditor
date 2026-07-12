@@ -62,7 +62,7 @@ public sealed class MainForm : Form
 
     public MainForm()
     {
-        Text = "TextCollection Bundle Editor 2.1.3";
+        Text = "TextCollection Bundle Editor 2.2.1";
         StartPosition = FormStartPosition.CenterScreen;
         Size = new Size(1450, 820);
         MinimumSize = new Size(1050, 620);
@@ -1170,51 +1170,171 @@ public sealed class MainForm : Form
         var result = new Dictionary<string, string>(
             StringComparer.OrdinalIgnoreCase);
 
+        char delimiter = DetectCsvDelimiter(path);
+
         using var parser = new TextFieldParser(path, Encoding.UTF8)
         {
             TextFieldType = FieldType.Delimited,
             HasFieldsEnclosedInQuotes = true,
             TrimWhiteSpace = false
         };
-        parser.SetDelimiters(";");
+
+        parser.SetDelimiters(delimiter.ToString());
 
         string[]? header = parser.ReadFields();
+
         if (header is null)
             throw new InvalidDataException("O CSV está vazio.");
 
-        int idIndex = Array.FindIndex(
-            header,
-            column => column.Trim().Equals(
-                "ID",
-                StringComparison.OrdinalIgnoreCase));
+        for (int index = 0; index < header.Length; index++)
+        {
+            header[index] = header[index]
+                .Trim()
+                .TrimStart('\uFEFF');
+        }
 
-        int editedIndex = Array.FindIndex(
+        int idIndex = FindCsvColumn(
             header,
-            column => column.Trim().Equals(
-                "Texto Editado",
-                StringComparison.OrdinalIgnoreCase));
+            "ID",
+            "Id",
+            "Identificador");
+
+        int editedIndex = FindCsvColumn(
+            header,
+            "Texto Editado",
+            "Texto Traduzido",
+            "Tradução",
+            "Traducao",
+            "Translation",
+            "Translated Text");
 
         if (idIndex < 0 || editedIndex < 0)
         {
+            string detectedColumns = string.Join(", ", header);
+
             throw new InvalidDataException(
-                "O CSV precisa ter as colunas 'ID' e 'Texto Editado'.");
+                "O CSV precisa ter as colunas 'ID' e 'Texto Editado'.\n\n" +
+                $"Colunas encontradas: {detectedColumns}\n" +
+                $"Separador detectado: '{delimiter}'");
         }
 
         while (!parser.EndOfData)
         {
             string[]? fields = parser.ReadFields();
+
             if (fields is null ||
                 fields.Length <= Math.Max(idIndex, editedIndex))
             {
                 continue;
             }
 
-            string id = fields[idIndex];
+            string id = fields[idIndex]
+                .Trim()
+                .TrimStart('\uFEFF');
+
             if (!string.IsNullOrWhiteSpace(id))
                 result[id] = fields[editedIndex];
         }
 
         return result;
+    }
+
+    private static char DetectCsvDelimiter(string path)
+    {
+        using var reader = new StreamReader(
+            path,
+            Encoding.UTF8,
+            detectEncodingFromByteOrderMarks: true);
+
+        string firstLine = reader.ReadLine() ?? string.Empty;
+
+        if (string.IsNullOrWhiteSpace(firstLine))
+            throw new InvalidDataException("O CSV está vazio.");
+
+        var candidates = new[] { ';', ',', '\t' };
+
+        char bestDelimiter = ';';
+        int bestCount = -1;
+
+        foreach (char candidate in candidates)
+        {
+            int count = CountDelimiterOutsideQuotes(firstLine, candidate);
+
+            if (count > bestCount)
+            {
+                bestCount = count;
+                bestDelimiter = candidate;
+            }
+        }
+
+        if (bestCount <= 0)
+        {
+            throw new InvalidDataException(
+                "Não foi possível detectar o separador do CSV. " +
+                "Use vírgula, ponto e vírgula ou tabulação.");
+        }
+
+        return bestDelimiter;
+    }
+
+    private static int CountDelimiterOutsideQuotes(
+        string line,
+        char delimiter)
+    {
+        bool insideQuotes = false;
+        int count = 0;
+
+        for (int index = 0; index < line.Length; index++)
+        {
+            char current = line[index];
+
+            if (current == '"')
+            {
+                if (insideQuotes &&
+                    index + 1 < line.Length &&
+                    line[index + 1] == '"')
+                {
+                    index++;
+                    continue;
+                }
+
+                insideQuotes = !insideQuotes;
+                continue;
+            }
+
+            if (!insideQuotes && current == delimiter)
+                count++;
+        }
+
+        return count;
+    }
+
+    private static int FindCsvColumn(
+        string[] header,
+        params string[] acceptedNames)
+    {
+        for (int index = 0; index < header.Length; index++)
+        {
+            string normalizedHeader = NormalizeColumnName(header[index]);
+
+            foreach (string acceptedName in acceptedNames)
+            {
+                if (normalizedHeader == NormalizeColumnName(acceptedName))
+                    return index;
+            }
+        }
+
+        return -1;
+    }
+
+    private static string NormalizeColumnName(string value)
+    {
+        return value
+            .Trim()
+            .TrimStart('\uFEFF')
+            .Replace("_", " ")
+            .Replace("-", " ")
+            .ToUpperInvariant();
     }
 
     private static string EscapeCsv(string? value)
