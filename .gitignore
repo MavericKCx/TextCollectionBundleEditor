@@ -1,0 +1,121 @@
+#########################################################
+# TextCollection Bundle Editor
+# Git Ignore
+#########################################################
+
+########################
+# Visual Studio
+########################
+
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+########################
+# Build
+########################
+
+[Bb]in/
+[Oo]bj/
+
+x64/
+x86/
+Debug/
+Release/
+
+########################
+# Publish
+########################
+
+publish/
+Publish/
+Publicar/
+
+*.pubxml.user
+
+########################
+# Rider / VSCode
+########################
+
+.idea/
+.vscode/
+
+########################
+# NuGet
+########################
+
+packages/
+
+*.nupkg
+
+########################
+# Logs
+########################
+
+*.log
+
+Logs/
+
+########################
+# Temp
+########################
+
+Temp/
+
+*.tmp
+*.temp
+
+########################
+# Backup
+########################
+
+Backup/
+
+*.bak
+
+########################
+# Windows
+########################
+
+Thumbs.db
+Desktop.ini
+
+########################
+# Crash Dumps
+########################
+
+*.dmp
+
+########################
+# Auto Generated
+########################
+
+Generated/
+
+########################
+# Optional
+########################
+
+*.cache
+*.pid
+
+# JetBrains Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# NuGet packages
+packages/
+
+# Testes
+TestResults/
+
+# Perfis de publicação
+Properties/PublishProfiles/*.pubxml.user
