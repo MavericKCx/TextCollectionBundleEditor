@@ -192,26 +192,6 @@ Atualmente testado em:
 
 ---
 
-# Capturas de tela
-
-## Interface V1
-
-> *(adicione uma imagem futuramente)*
-
----
-
-## Interface V2
-
-> *(adicione uma imagem futuramente)*
-
----
-
-## Tradução funcionando no jogo
-
-> *(adicione a imagem do "NOVO JOGO" que você me mostrou)*
-
----
-
 # Tecnologias
 
 - C#
