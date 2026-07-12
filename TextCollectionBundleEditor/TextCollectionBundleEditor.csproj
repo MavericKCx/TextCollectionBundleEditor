@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <AssemblyName>TextCollectionBundleEditor</AssemblyName>
+    <RootNamespace>TextCollectionBundleEditor</RootNamespace>
+
+    <Product>TextCollection Bundle Editor</Product>
+    <Title>TextCollection Bundle Editor</Title>
+    <Description>Editor de localização para AssetBundles Unity que usam TextCollection e LocalisedText.</Description>
+    <Company>MaverickCX</Company>
+    <Authors>MaverickCX</Authors>
+    <Copyright>© 2026 MaverickCX</Copyright>
+
+    <Version>2.2.0</Version>
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <FileVersion>2.2.0.0</FileVersion>
+    <InformationalVersion>2.2.0</InformationalVersion>
+
+    <ApplicationIcon>Assets\tcbe.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AssetsTools.NET" Version="3.0.4" />
+  </ItemGroup>
+
+</Project>
