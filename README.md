@@ -1,0 +1,2 @@
+# TextCollectionBundleEditor
+Professional Unity TextCollection Localization Tool
